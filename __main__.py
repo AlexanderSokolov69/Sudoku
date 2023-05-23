@@ -1,12 +1,9 @@
-from tkinter import *
-
-from const import *
 from classes import *
 
 
 def main():
     window = Tk()
-    ex = Sudoku()
+    Sudoku()
     window.mainloop()
 
 
