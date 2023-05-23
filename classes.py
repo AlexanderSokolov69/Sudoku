@@ -64,13 +64,13 @@ class Sudoku(Frame):
                       font=("Georgia", 20))
         self.gr_level = IntVar()  # Хранит состояние нажатий радиокнопок
         rad1 = Radiobutton(labelframe1, text='Простая', cursor='heart', style='Wild.TRadiobutton',
-                           variable=self.gr_level, value=1)
+                           variable=self.gr_level, value=1, command=self.fill_field)
         rad1.pack(side=TOP, pady=6, padx=74)
         rad2 = Radiobutton(labelframe1, text='Средняя', cursor='heart', style='Wild.TRadiobutton',
-                           variable=self.gr_level, value=2)
+                           variable=self.gr_level, value=2, command=self.fill_field)
         rad2.pack(side=TOP, pady=6, padx=74)
         rad3 = Radiobutton(labelframe1, text='Сложная', cursor='heart', style='Wild.TRadiobutton',
-                           variable=self.gr_level, value=3)
+                           variable=self.gr_level, value=3, command=self.fill_field)
         rad3.pack(side=TOP, pady=6, padx=(70, 60))
         self.gr_level.set(1)
         
@@ -202,13 +202,12 @@ class Sudoku(Frame):
         img = ImageGrab.grab().crop((x, y, x1, y1))
         
         try:
-            img.save(f"{CONTEST_FOLDER}\\Sudoku_contest{self.number_generation:03}"
-                     f"{' open' if self.show_result.get() else ''}.jpg",
-                     quality="web_medium")
+            fname = f"Судоку_{['Простая', 'Средняя', 'Сложная'][self.gr_level.get() - 1]}_"
+            fname = f"{CONTEST_FOLDER}/{fname}{self.number_generation:03}" \
+                    f"{'_открытая' if self.show_result.get() else ''}.jpg"
+            img.save(fname, quality="web_medium")
         except OSError as err:
             showerror(title='Не удалось сохранить файл!', message=f'{err}')
             print(f'Не удалось сохранить файл: {err}')
-        finally:
-            showinfo(title="Задача сохранена!", message=f"{CONTEST_FOLDER}\\Sudoku_contest{self.number_generation:03}"
-                                                        f"{' open' if self.show_result.get() else ''}.jpg"
-                     )
+        else:
+            showinfo(title="Задача сохранена!", message=fname)
